@@ -250,7 +250,7 @@
     const msg = document.getElementById("signupMsg");
 
     // Basic validation
-    if (!name || !email || !password || !image || !confirmPassword) {
+    if (!name || !email || !password ||!confirmPassword) {
       e.preventDefault();
       msg.textContent = "All fields are required.";
       return;

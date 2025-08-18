@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jobseekers</title>
-  <link href="/stylesheets/style1.css" rel="stylesheet">
+  <title>Seeker Cards</title>
+  <link href="/stylesheets/card.css" rel="stylesheet">
 </head>
+
 <body>
   <div class="page-container">
-    <div class="top-bar">
-      <a href="/">Go to main page</a>
+    <div class="home">
+      <a href="/">Go to Home</a>
     </div>
+    <h1>Our Seekers</h1>
 
-    <h1>All Seekers</h1>
-
-    <div class="users">
-      <% if (seekers.length > 0) { %>
+    <div class="card-container">
+      <% if (seekers.length> 0) { %>
         <% seekers.forEach(function(seeker) { %>
-          <div class="user">
-            <div class="user-image">
-              <img src="<%= seeker.image %>" alt="user image">
+          <div class="card">
+            <div class="card-image">
+              <img src="<%= seeker.image %>" alt="<%= seeker.name %>">
             </div>
-            <h3>Name: <%= seeker.name %></h3>
-            <h5>Role: <%= seeker.jobs %></h5>
-            <h5>Phone: <%= seeker.phone %></h5>
-            <h5>City: <%= seeker.city %></h5>
+            <div class="card-content">
+              <h2>Name:- <%= seeker.name %>
+              </h2>
+              <h3>Role:-
+                <%= seeker.jobs %>
+              </h3>
+              <h3>Phone:-
+                <%= seeker.phone %>
+              </h3>
+              <h3>City:-
+                <%= seeker.city %>
+              </h3>
+            </div>
           </div>
-        <% }) %>
-      <% } else { %>
-        <h3 class="no-seekers">No seekers Yet</h3>
-      <% } %>
+          <% }) %>
+            <% } else { %>
+              <h3 class="no-seekers">No seekers yet</h3>
+              <% } %>
     </div>
   </div>
 </body>
+
 </html>

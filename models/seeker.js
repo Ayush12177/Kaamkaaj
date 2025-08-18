@@ -10,7 +10,7 @@ const seekerSchema = mongoose.Schema({
     name: String,
     email: String,
     image: {
-        type:String,
+        type:String, 
     },
     role: {
         type: String,
