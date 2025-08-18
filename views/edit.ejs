@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Udated Page</title>
+  <link href="/stylesheets/style.css" rel="stylesheet">
+  <script src="http://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <h1 class="text-2xl text-zinc-700 mx-5 my-5">That's the only thing you can change.</h1>
+  <form action="/update/<%= user._id %>" method="post">
+    <input class="px-2 py-1 border-2 border-zinc-800 outline-none rounded-lg bg-transparent mx-3" type="text" id="name"
+      placeholder="Full Name" name="name" value="<%= user.name %>" required />
+    <input class="px-2 py-1 border-2 border-zinc-800 outline-none rounded-lg bg-transparent mx-3" type="email"
+      id="email" placeholder="Email" name="email" value="<%= user.email %>" required />
+    <input class="px-2 py-1 border-2 border-zinc-800 outline-none rounded-lg bg-transparent mx-3" type="url" id="Image"
+      placeholder="Image Url" name="image" value="<%= user.image %>" required />
+    <input class="px-2 py-1 border-2 border-zinc-800 outline-none rounded-lg bg-transparent mx-3" type="tel" id="phone"
+      placeholder="Enter phone Number" name="phone" value="<%= user.phone %>" required />
+    <button class="bg-blue-300 rounded-lg text-xl px-1" type="submit">Update User</button>
+  </form>
+</body>
+</html>

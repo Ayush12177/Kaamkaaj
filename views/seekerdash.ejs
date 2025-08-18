@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <title>JobSeeker Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f0f2f5;
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #img-div {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    #img-div img {
+      width: 75px;
+      height:75px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    #img-div h4 {
+      color: white;
+      margin-top: 10px;
+    }
+
+    .sidebar ul {
+      width: 100%;
+      padding-left: 0;
+    }
+
+    .sidebar li {
+      text-align: center;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar li {
+      padding: 15px 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .sidebar li:hover,
+    .sidebar li.active {
+      background-color: #34495e;
+    }
+
+    .main {
+      flex: 1;
+      padding: 35px 5px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section {
+      display: none;
+      animation: fade 0.5s ease forwards;
+      position: absolute;
+      width: 100%;
+      top: 10;
+      left: 0;
+    }
+
+    i {
+      position: absolute;
+      z-index: 1000;
+      top: 10px;
+      font-size: 36px;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .edit a {
+      color: #f0f2f5;
+      position: absolute;
+      margin-top: 270px;
+      margin-left: 25px;
+      padding: 5px;
+      text-decoration: none;
+      border-radius: 5px;
+      background-color: rgb(35, 35, 123);
+    }
+
+    .delete a{
+      color: #f0f2f5;
+      position: absolute;
+      margin-top: 270px;
+      margin-left: 200px;
+      padding: 5px;
+      text-decoration: none;
+      border-radius: 5px;
+      background-color: rgb(35, 35, 123);
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+
+    .card p {
+      margin: 8px 0;
+    }
+
+    #img-div img {
+      border-radius: 20px;
+    }
+
+    ul li a {
+      color: aliceblue;
+      text-decoration: none;
+    }
+
+    @media only screen and (max-width: 1000px) {
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <h2>seeker Dashboard</h2>
+    <div id="img-div">
+      <img src="<%= seeker.image %>" alt="user image" />
+
+      <h4>Hello,<%= seeker.name %>
+      </h4>
+    </div>
+    <ul id="nav">
+      <li class="active" data-section="profile">User Profile</li>
+      <li data-section="home"><a href="/">Home</a></li>
+      <li data-section="task">Task</li>
+      <li data-section="review">Reviews</li>
+      <li data-section="about">About us</li>
+      <li data-section="logout"><a href="/logout">Logout</a></li>
+    </ul>
+  </div>
+  <!-- <i class="fa-solid fa-bars"></i> -->
+  <div class="main">
+    <div>
+      <button id="bars"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    <div id="profile" class="section active">
+      <div class="card">
+        <h3>Jobseeker Profile</h3>
+        <p><strong>Name:</strong>
+          <%= seeker.name %>
+        </p>
+        <p><strong>Email:</strong>
+          <%= seeker.email %>
+        </p>
+        <p><strong>Phone:</strong>
+          <%= seeker.phone %>
+        </p>
+        <p><strong>Job:</strong>
+          <%= seeker.jobs %>
+        </p>
+        <p><strong>Role:</strong>
+          <%= seeker.role %>
+        </p>
+         <p><strong>City:</strong>
+          <%= seeker.city %>
+        </p>
+      </div>
+    </div>
+    <div class="edit">
+      <a href="/edit/<%= seeker._id %>">Edit User</a>
+    </div>
+    <div class="delete">
+      <a class="text-red-400 mx-2" href="/delete/<%= seeker._id %>">Delete User</a>
+    </div>
+
+    <div id="task" class="section">
+      <div class="card">
+        <h3>Completed Task</h3>
+        <p>✔️Task-1:Completed on 23/05/22</p>
+        <p>✔️Task-2:Completed on 02/06/22</p>
+        <p>✔️Task-3:Completed on 15/06/22</p>
+      </div>
+    </div>
+
+    <div id="review" class="section">
+      <div class="card">
+        <h3>User Testimonial</h3>
+        <p><strong>Review-1:</strong>xyz</p>
+        <p><strong>Review-2:</strong>abc</p>
+        <p><strong>Review-3:</strong>pqr</p>
+      </div>
+    </div>
+
+    <div id="about" class="section">
+      <div class="card">
+        <h3>About us</h3>
+        <p><a href="#">Instagram</a></p>
+        <p><a href="#">Facebook</a></p>
+        <p><a href="#">Twitter</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const navItems = document.querySelectorAll("#nav li");
+    const sections = document.querySelectorAll(".section");
+
+    navItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        // Remove active from all nav items
+        navItems.forEach((i) => i.classList.remove("active"));
+        item.classList.add("active");
+
+        // Hide all sections
+        sections.forEach((section) => section.classList.remove("active"));
+
+        // Show the selected section
+        const target = item.getAttribute("data-section");
+        document.getElementById(target).classList.add("active");
+      });
+    });
+    let hide = 0;
+    const bars = document.getElementById("bars");
+    const sidebar = document.querySelector(".sidebar");
+    bars.addEventListener("click", () => {
+      if (hide == 0) {
+        sidebar.style.display = "flex";
+        bars.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        hide = 1;
+      } else {
+        sidebar.style.display = "none";
+        bars.innerHTML = '<i class="fa-solid fa-bars"></i>';
+        hide = 0;
+      }
+    });
+  </script>
+</body>
+
+</html>

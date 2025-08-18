@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Blue Collar Connect</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            height: 100vh;
+        }
+
+        .main-heading {
+            margin: auto;
+            text-align: center;
+            font-size: 2rem;
+            padding: 2rem;
+            margin: 2rem;
+        }
+
+        .login-container {
+            background: white;
+            margin: auto;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #003366;
+            margin-bottom: 1.5rem;
+        }
+
+        .choice {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .choice a {
+            text-decoration: none;
+             color: #003366;
+        }
+
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007acc;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #005b96;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width:600px) {
+            .main-heading {
+                font-size: 1.25rem;
+                padding: 1.5rem;
+                margin: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-heading">
+        <h2>Kaamkaaj - Builds the Future</h2>
+    </div>
+    <div class="login-container">
+        <h2>Log in As a</h2>
+        <form id="loginForm" action="/login/user" method="post">
+
+            <div class="choice">
+
+                <label for="p1">
+                    <input type="radio" name="choice" value="register" id="p1"><a href="/login/jobseeker">jobseeker</a>
+                </label>
+
+
+                <label for="p2">
+                    <input type="radio" name="choice" value="userreg" id="p2" checked><a href="/login/user">User</a>
+                </label>
+
+            </div>
+            <input type="email" id="email" placeholder="Email" name="email" required />
+            <input type="password" id="password" placeholder="Password" name="password" required />
+            <button type="submit">Login</button>
+            <p id="errorMsg" class="error"></p>
+            <p>Don't have account?<a href="/register/user">Register here</a></p>
+        </form>
+    </div>
+</body>
+
+</html>
