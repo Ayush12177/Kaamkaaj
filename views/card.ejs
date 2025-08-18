@@ -1,43 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jobseekers</title>
   <link href="/stylesheets/style1.css" rel="stylesheet">
-  <!-- <script src="http://cdn.tailwindcss.com"></script> -->
 </head>
-
 <body>
-  <div class="w-full h-full p-10 text text-black">
-    <div>
-      <a class="bg-blue-500" href="/">Go to main page</a>
+  <div class="page-container">
+    <div class="top-bar">
+      <a href="/">Go to main page</a>
     </div>
-    <h1 class="text-3xl tracking-tighter mb-3 font-light">All Seekers</h1>
-    <div class="users flex gap-7  flex-wrap">
-      <% if(seekers.length> 0) { %>
-        <% seekers.forEach(function(seeker){ %>
-          <div class="user w-72  p-4 bg-blue-300 rounded-lg">
-            <div class="w-50 h-52 bg-red-500 rounded-lg overflow-hidden"><img class="h-full w-full"
-                src="<%= seeker.image %>" alt="user image"></div>
-            <h3 class="text-xl tracking-tighter mt-3">Name:-
-              <%= seeker.name %>
-            </h3>
-            <h5 class="text-zinc-900 mt-3">Role:-
-              <%= seeker.jobs %>
-            </h5>
-            <h5 class="text-zinc-900 mt-2">Phone:-
-              <%= seeker.phone %>
-            </h5>
-            <h5 class="text-zinc-900 mt-2">City:-
-              <%= seeker.city %>
-            </h5>
+
+    <h1>All Seekers</h1>
+
+    <div class="users">
+      <% if (seekers.length > 0) { %>
+        <% seekers.forEach(function(seeker) { %>
+          <div class="user">
+            <div class="user-image">
+              <img src="<%= seeker.image %>" alt="user image">
+            </div>
+            <h3>Name: <%= seeker.name %></h3>
+            <h5>Role: <%= seeker.jobs %></h5>
+            <h5>Phone: <%= seeker.phone %></h5>
+            <h5>City: <%= seeker.city %></h5>
           </div>
-          <% }) %>
-            <% } else { %>
-              <h3 class="text-zinc-700">No seekers Yet</h3>
-              <% } %>
+        <% }) %>
+      <% } else { %>
+        <h3 class="no-seekers">No seekers Yet</h3>
+      <% } %>
     </div>
   </div>
 </body>
