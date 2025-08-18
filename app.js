@@ -6,6 +6,7 @@ var logger = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
 const passportSetup = require('./config/passport-setup');
+const MongoStore = require('connect-mongo');
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
@@ -18,10 +19,21 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// ✅ Session with MongoDB
 app.use(session({
-  secret: 'your-secret-key',
+  secret: process.env.SESSION_SECRET || 'ayush',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // better for production
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI || 'mongodb://localhost:27017/kaamkaaj',
+    collectionName: 'sessions',
+    ttl: 14 * 24 * 60 * 60 // 14 days
+  }),
+  cookie: {
+    secure: false, // set to true if using HTTPS
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 // 1 day
+  }
 }));
 
 app.use(passport.initialize());
@@ -44,11 +56,8 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
