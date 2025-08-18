@@ -85,18 +85,15 @@
                 <li><a href="/register/jobseeker">Sign up</a></li>
                 <li>
                     <button id="location-btn">
-                        <% if (typeof location !== 'undefined' && location) { %>
+                        <% if (typeof location !=='undefined' && location) { %>
                             <%= location %>
-                        <% } else { %>
-                            <i class="fa-solid fa-location-dot" style="color: #fff; font-size: 1.5rem;"></i>
-                        <% } %>
+                                <% } else { %>
+                                    <i class="fa-solid fa-location-dot" style="color: #fff; font-size: 1.5rem;"></i>
+                                    <% } %>
                     </button>
                 </li>
                 <li><a href="/dashboard"><i class="fa-regular fa-user"></i></a></li>
             </ul>
-            <div class="menu-icon">
-                <i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
-            </div>
         </nav>
     </header>
     <main id="Main">
@@ -117,56 +114,56 @@
         <div id="serve" class="hero">
             <h1>We are Providing many kinds of services...</h1>
             <div class="card-container">
-                <% const link = userType === 'seeker' ? '/seekerdash' : '/workers'; %>
-                <a href="<%= link %>" id="anchor">
-                    <div class="card">
-                        <img src="/images/plumber.jpg" alt="plumber image">
-                        <h2>Plumber</h2>
-                        <p>Check the Plumber near you..</p>
-                    </div>
-                </a>
-                <a href="<%= link %>" id="anchor">
-                    <div class="card">
-                        <img src="/images/carpenter.jpg" alt="carpenter image">
-                        <h2>Carpenter</h2>
-                        <p>Check the carpenter near you..</p>
-                    </div>
-                </a>
-                <a href="<%= link %>" id="anchor">
-                    <div class="card">
-                        <img src="/images/mechanic.webp" alt="mechanic image">
-                        <h2>Mechanic</h2>
-                        <p>Check the Mechanic near you..</p>
-                    </div>
-                </a>
-                <a href="<%= link %>" id="anchor">
-                    <div class="card">
-                        <img src="/images/driver.webp" alt="driver image">
-                        <h2>Driver</h2>
-                        <p>Check the driver near you..</p>
-                    </div>
-                </a>
-                <a href="<%= link %>" id="anchor">
-                    <div class="card">
-                        <img src="/images/electrician.jpg" alt="electrician image">
-                        <h2>Electrician</h2>
-                        <p>Check the electrician near you..</p>
-                    </div>
-                </a>
-                <a href="<%= link %>" id="anchor">
-                    <div class="card">
-                        <img src="/images/dilevery boy.avif" alt="delivery boy image">
-                        <h2>Dilevery Boy</h2>
-                        <p>Check the dilevery boy near you..</p>
-                    </div>
-                </a>
-                <a href="<%= link %>" id="anchor">
-                    <div class="card">
-                        <img src="/images/construction worker.webp" alt="const. worker image">
-                        <h2>Worker</h2>
-                        <p>Check the const. worker near you..</p>
-                    </div>
-                </a>
+                <% const link=userType==='seeker' ? '/seekerdash' : '/workers' ; %>
+                    <a href="<%= link %>" id="anchor">
+                        <div class="card">
+                            <img src="/images/plumber.jpg" alt="plumber image">
+                            <h2>Plumber</h2>
+                            <p>Check the Plumber near you..</p>
+                        </div>
+                    </a>
+                    <a href="<%= link %>" id="anchor">
+                        <div class="card">
+                            <img src="/images/carpenter.jpg" alt="carpenter image">
+                            <h2>Carpenter</h2>
+                            <p>Check the carpenter near you..</p>
+                        </div>
+                    </a>
+                    <a href="<%= link %>" id="anchor">
+                        <div class="card">
+                            <img src="/images/mechanic.webp" alt="mechanic image">
+                            <h2>Mechanic</h2>
+                            <p>Check the Mechanic near you..</p>
+                        </div>
+                    </a>
+                    <a href="<%= link %>" id="anchor">
+                        <div class="card">
+                            <img src="/images/driver.webp" alt="driver image">
+                            <h2>Driver</h2>
+                            <p>Check the driver near you..</p>
+                        </div>
+                    </a>
+                    <a href="<%= link %>" id="anchor">
+                        <div class="card">
+                            <img src="/images/electrician.jpg" alt="electrician image">
+                            <h2>Electrician</h2>
+                            <p>Check the electrician near you..</p>
+                        </div>
+                    </a>
+                    <a href="<%= link %>" id="anchor">
+                        <div class="card">
+                            <img src="/images/dilevery boy.avif" alt="delivery boy image">
+                            <h2>Dilevery Boy</h2>
+                            <p>Check the dilevery boy near you..</p>
+                        </div>
+                    </a>
+                    <a href="<%= link %>" id="anchor">
+                        <div class="card">
+                            <img src="/images/construction worker.webp" alt="const. worker image">
+                            <h2>Worker</h2>
+                            <p>Check the const. worker near you..</p>
+                        </div>
+                    </a>
             </div>
         </div>
         <div class="mid-section">
@@ -338,7 +335,7 @@
                 getLocation();
             }
 
-            submitLocationBtn.onclick = function() {
+            submitLocationBtn.onclick = function () {
                 const manualLocation = manualLocationInput.value.trim();
                 if (manualLocation) {
                     localStorage.setItem('location-permission', 'granted');
@@ -395,7 +392,7 @@
             }
 
             function showError(error) {
-                 switch (error.code) {
+                switch (error.code) {
                     case error.PERMISSION_DENIED:
                         locationBtn.innerHTML = "User denied Geolocation";
                         break;
