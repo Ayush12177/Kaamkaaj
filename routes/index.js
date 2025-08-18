@@ -10,6 +10,13 @@ const seekerModel = require("../models/seeker.js");
 const userModel = require("../models/user.js");
 const seeker = require('../models/seeker.js');
 const user = require('../models/user.js');
+// const { OAuth2Client } = require('google-auth-library');
+
+// const client = new OAuth2Client(
+//   process.env.GOOGLE_CLIENT_ID,
+//   process.env.GOOGLE_CLIENT_SECRET,
+//   process.env.GOOGLE_REDIRECT_URI,
+// )
 
 
 
@@ -23,6 +30,7 @@ app.get('/', function (req, res, next) {
   if (!token) {
     return res.render('kamkaj', { userType: null, location: location });
   }
+// google Oauth authentication
 
   // Try to decode as seeker
   jwt.verify(token, "ayush", (err, seekerDecoded) => {
@@ -41,6 +49,51 @@ app.get('/', function (req, res, next) {
     });
   });
 });
+
+// app.get("/auth/google/callback",async (req, res) => {
+//   const code = req.query.code;
+
+//   try {
+//     const { tokens } = await client.getToken(code);
+//     client.setCredentials(tokens);
+
+//     const ticket = await client.verifyIdToken({
+//       idToken: tokens.id_token,
+//       audience: process.env.GOOGLE_CLIENT_ID,
+//     });
+
+//     const payload = ticket.getPayload();
+//     const { email, name, picture, sub: googleId } = payload;
+//     console.log("payload",payload);
+    
+
+//     let user = await userModel.findOne({ email: email });
+//     console.log("user found",user)
+    
+//     if (!user) {
+//       user = await userModel.create({
+//         email,
+//         name,
+//         username: email.split("@")[0],
+//         googleId
+//       });
+//       log("user created",user)
+//     }
+
+//     // Generate JWT
+//     const token = jwt.sign(
+//       { id: user._id, email: user.email, role: user.role },
+//       "ayush",
+//       { expiresIn: "7d" }
+//     );
+
+//     res.cookie("token", token, { httpOnly: true });
+//     res.redirect("/userdash");
+//   } catch (err) {
+//     console.error("Google auth error", err);
+//     res.redirect("/userdash");
+//   }
+// });
 
 app.get('/register/jobseeker', (req, res) => {
   res.render('register')
@@ -218,12 +271,12 @@ app.get("/edit/:userid", async (req, res) => {
 app.post("/update/:userid", async (req, res) => {
   let { image, name, email, phone } = req.body;
   let user = await seekerModel.findOneAndUpdate({ _id: req.params.userid }, { image, name, email, phone }, { new: true });
-  res.redirect("/user");
+  res.redirect("/seekerdash");
 });
 
 app.get("/delete/:id", async (req, res) => {
   let user = await seekerModel.findOneAndDelete({ _id: req.params.id });
-  res.redirect("/user")
+  res.redirect("/")
 });
 
 app.get("/logout", (req, res) => {

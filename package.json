@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.12",
     "bcrypt": "^6.0.0",
     "connect-mongo": "^5.1.0",
     "cookie": "^1.0.2",
@@ -15,6 +16,7 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "express-session": "^1.18.2",
+    "google-auth-library": "^10.2.1",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
@@ -22,6 +24,12 @@
     "multer": "^2.0.1",
     "nodemon": "^3.1.10",
     "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "postcss-cli": "^11.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.12"
   }
 }
