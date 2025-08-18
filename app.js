@@ -25,7 +25,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false, // better for production
   store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URI || 'mongodb://localhost:27017/kaamkaaj',
+    mongoUrl: process.env.MONGO_URI,
     collectionName: 'sessions',
     ttl: 14 * 24 * 60 * 60 // 14 days
   }),
