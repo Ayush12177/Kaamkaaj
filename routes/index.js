@@ -155,7 +155,7 @@ app.get("/workers", isUser, async function (req, res) {
     // If no role is provided, fetch all seekers
     seekers = await seekerModel.find();
   }
-  return res.render("card", { seekers });
+  return res.render("seeker", { seekers });
 });
 
 app.get("/login/jobseeker", (req, res) => {
