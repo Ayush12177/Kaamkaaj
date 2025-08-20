@@ -92,7 +92,7 @@ nav ul li a:hover {
   font-size: 30px;
 }
 
-@media (max-width:400px) {
+@media (max-width:800px) {
   nav {
     position: relative;
     flex-wrap: wrap;
@@ -134,7 +134,7 @@ main h1:hover {
   text-shadow: 1px 2px 2px black;
 }
 
-@media (max-width:400px) {
+@media (max-width:800px) {
   main h1 {
     font-size: 30px;
     padding: 10px;
@@ -176,7 +176,7 @@ main h2 {
 }
 
 .card {
-  height: 25vmax;
+  height: 20vmax;
   width: 18vmax;
   border: 2px solid black;
   border-radius: 8px;
@@ -196,13 +196,6 @@ main h2 {
   text-align: left;
 }
 
-.card p {
-  margin-left: 15px;
-  font-size: 18px;
-  font-weight: 400;
-
-}
-
 .card:hover {
   transition: all 90ms ease-in-out;
   box-shadow: 2px 3px 8px black;
@@ -212,7 +205,7 @@ main h2 {
 @media (max-width:770px) {
   .card {
     width: 18vmax;
-    height: 30vmax;
+    height: 22vmax;
   }
 
   .card img {
