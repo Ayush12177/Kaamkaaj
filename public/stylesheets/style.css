@@ -92,21 +92,25 @@ nav ul li a:hover {
   font-size: 30px;
 }
 
-@media (max-width:600px) {
+@media (max-width:400px) {
   nav {
     position: relative;
+    flex-wrap: wrap;
   }
 
   nav ul {
-    position: absolute;
+    width: 100%;
+    /* position: absolute;
     top: 80px;
     left: 0;
-    right: 0;
+    right: 0; */
     flex-direction: column;
     text-align: center;
     background: #004274;
     gap: 0;
     overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-in-out;
   }
 
   nav ul li {
@@ -117,21 +121,25 @@ nav ul li a:hover {
   .menu-icon {
     display: block;
   }
-
-  #menuList {
-    transition: all 0.5s;
-  }
 }
 
 main h1 {
   padding: 5px;
-  margin-top: 7rem;
+  margin-top: 6rem;
   color: hotpink;
   font-size: 40px;
 }
 
 main h1:hover {
   text-shadow: 1px 2px 2px black;
+}
+
+@media (max-width:400px) {
+  main h1 {
+    font-size: 30px;
+    padding: 10px;
+    margin-top: .5rem;
+  }
 }
 
 main h2 {
@@ -141,11 +149,7 @@ main h2 {
   line-height: 1.75rem;
 }
 
-@media(max-width:600px) {
-  main h1 {
-    padding-top: 15rem;
-  }
-}
+
 
 .hero {
   padding: auto;
