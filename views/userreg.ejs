@@ -148,7 +148,7 @@
   <div class="login-container">
     <h2>Create New Account As</h2>
 
-     <form action="/register/user" id="signupForm" method="post" >
+     <form action="/register/user" id="signupForm" method="post" enctype="multipart/form-data" >
 
       <div class="choice">
         
@@ -162,7 +162,7 @@
       </div>
       <input type="text" id="name" placeholder="Full Name" name="name" required />
       <input type="email" id="email" placeholder="Email" name="email" required />
-      <input type="url" id="Image" placeholder="enter image urls" name="image" >
+      <input type="file" id="Image" name="image" >
       <input type="tel" id="phone" placeholder="Enter phone Number" name="phone" required />
       <input type="password" id="password" placeholder="Password" name="password" required />
       <input type="password" id="confirmPassword" placeholder="Confirm Password" required />

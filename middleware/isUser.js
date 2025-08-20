@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 function isUser(req, res, next) {
   try {
     if (req.cookies.token === "") {
-      res.redirect("/login/user")
+      res.redirect("/login")
     }
     else {
       const data = jwt.verify(req.cookies.token, "bhumii");
@@ -12,9 +12,13 @@ function isUser(req, res, next) {
     }
   }
   catch (err) {
-
-    return res.redirect("/login/user"); // or return res.status(401).send("Unauthorized");
-
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).send('Token expired. Please log in again.');
+    } else if (err.name === 'JsonWebTokenError') {
+      return res.status(401).send('Invalid token. Please log in again.');
+    } else {
+      return res.redirect("/login");
+    }
   }
 }
 

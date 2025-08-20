@@ -10,14 +10,20 @@ const seekerModel = require("../models/seeker.js");
 const userModel = require("../models/user.js");
 const seeker = require('../models/seeker.js');
 const user = require('../models/user.js');
-// const { OAuth2Client } = require('google-auth-library');
+const multer = require("multer");
+const path = require("path");
 
-// const client = new OAuth2Client(
-//   process.env.GOOGLE_CLIENT_ID,
-//   process.env.GOOGLE_CLIENT_SECRET,
-//   process.env.GOOGLE_REDIRECT_URI,
-// )
-
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/images')
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname))
+    }
+  })
+  
+const upload = multer({ storage: storage })
 
 
 app.use(cookieParser());
@@ -50,57 +56,12 @@ app.get('/', function (req, res, next) {
   });
 });
 
-// app.get("/auth/google/callback",async (req, res) => {
-//   const code = req.query.code;
-
-//   try {
-//     const { tokens } = await client.getToken(code);
-//     client.setCredentials(tokens);
-
-//     const ticket = await client.verifyIdToken({
-//       idToken: tokens.id_token,
-//       audience: process.env.GOOGLE_CLIENT_ID,
-//     });
-
-//     const payload = ticket.getPayload();
-//     const { email, name, picture, sub: googleId } = payload;
-//     console.log("payload",payload);
-    
-
-//     let user = await userModel.findOne({ email: email });
-//     console.log("user found",user)
-    
-//     if (!user) {
-//       user = await userModel.create({
-//         email,
-//         name,
-//         username: email.split("@")[0],
-//         googleId
-//       });
-//       log("user created",user)
-//     }
-
-//     // Generate JWT
-//     const token = jwt.sign(
-//       { id: user._id, email: user.email, role: user.role },
-//       "ayush",
-//       { expiresIn: "7d" }
-//     );
-
-//     res.cookie("token", token, { httpOnly: true });
-//     res.redirect("/userdash");
-//   } catch (err) {
-//     console.error("Google auth error", err);
-//     res.redirect("/userdash");
-//   }
-// });
-
 app.get('/register/jobseeker', (req, res) => {
   res.render('register')
 });
 
-app.post('/register/jobseeker', async (req, res) => {
-  const { name, email, image, phone, role , job, city, password } = req.body;
+app.post('/register/jobseeker',upload.single("image"), async (req, res) => {
+  const { name, email, phone, role , job, city, password } = req.body;
   let seeker = await seekerModel.findOne({ email: email });
   if (seeker) return res.status(500).send("Jobseeker already exist")
   bcrypt.genSalt(10, (err, salt) => {
@@ -108,7 +69,7 @@ app.post('/register/jobseeker', async (req, res) => {
       let seeker = await seekerModel.create({
         name: name,
         email: email,
-        image: image,
+        image: req.file.filename,
         phone: phone,
         jobs: job,
         city: city,
@@ -125,8 +86,8 @@ app.get('/register/user', (req, res) => {
   res.render('userreg')
 });
 
-app.post('/register/user', async (req, res) => {
-  const { name, email, image, role, phone, password } = req.body;
+app.post('/register/user',upload.single("image"), async (req, res) => {
+  const { name, email, role, phone, password } = req.body;
   let user = await userModel.findOne({ email: email });
   if (user) return res.status(500).send("User already exist")
 
@@ -135,7 +96,7 @@ app.post('/register/user', async (req, res) => {
       let user = await userModel.create({
         name: name,
         email: email,
-        image: image,
+        image: req.file.filename,
         phone: phone,
         password: hash,
       })
@@ -146,13 +107,17 @@ app.post('/register/user', async (req, res) => {
 
 app.get("/workers", isUser, async function (req, res) {
   const role = req.query.role;
+  const searchQuery = req.query.search;
   let seekers;
 
   if (role) {
     // If a role is provided, filter seekers by that role
     seekers = await seekerModel.find({ jobs: role });
+  } else if (searchQuery) {
+    // If a search query is provided, filter seekers by that query
+    seekers = await seekerModel.find({ jobs: { $regex: searchQuery, $options: 'i' } });
   } else {
-    // If no role is provided, fetch all seekers
+    // If no role or search query is provided, fetch all seekers
     seekers = await seekerModel.find();
   }
   return res.render("seeker", { seekers });
@@ -268,9 +233,9 @@ app.get("/edit/:userid", async (req, res) => {
   res.render("edit", { user });
 });
 
-app.post("/update/:userid", async (req, res) => {
-  let { image, name, email, phone } = req.body;
-  let user = await seekerModel.findOneAndUpdate({ _id: req.params.userid }, { image, name, email, phone }, { new: true });
+app.post("/update/:userid",upload.single('image'), async (req, res) => {
+  let { name, email, phone } = req.body;
+  let user = await seekerModel.findOneAndUpdate({ _id: req.params.userid }, { image:req.file.filename, name, email, phone }, { new: true });
   res.redirect("/seekerdash");
 });
 

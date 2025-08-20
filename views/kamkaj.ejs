@@ -65,6 +65,30 @@
             background-color: #f44336;
             color: white;
         }
+        .search-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #search-input {
+            width: 60%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+
+        #search-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007acc;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 1rem;
+        }
     </style>
 </head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -111,6 +135,10 @@
                 process. Kaamkaaj is a digital platform designed to bridge the gap between employers and
                 blue-collar
                 workers, improving job accessibility and efficiency.</h2>
+        </div>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search for services...">
+            <button id="search-button">Search</button>
         </div>
         <br>
         <br>
@@ -305,12 +333,12 @@
                     const userType = "<%= userType %>";
                     if (userType === 'seeker') {
                         window.location.href = '/seekerdash';
-                    } else {
+                    } else if (userType === 'user') {
                         const clickedH2Text = card.querySelector('h2').innerText.trim();
                         const role = encodeURIComponent(clickedH2Text); // Encode the role for URL
-
-                        // Redirect to /workers route with role as query parameter
                         window.location.href = `/workers?role=${role}`;
+                    } else {
+                        window.location.href = '/login/user';
                     }
                 });
             });
@@ -410,6 +438,12 @@
                         break;
                 }
             }
+            document.getElementById('search-button').addEventListener('click', () => {
+                const query = document.getElementById('search-input').value;
+                if (query) {
+                    window.location.href = `/workers?role=${query}`;
+                }
+            });
         </script>
 </body>
 

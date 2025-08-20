@@ -11,9 +11,13 @@ function IsLoggedIn(req, res, next) {
     }
   }
   catch (err) {
-
-    return res.redirect("/login/jobseeker"); // or return res.status(401).send("Unauthorized");
-
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).send('Token expired. Please log in again.');
+    } else if (err.name === 'JsonWebTokenError') {
+      return res.status(401).send('Invalid token. Please log in again.');
+    } else {
+      return res.redirect("/login");
+    }
   }
 }
 

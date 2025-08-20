@@ -17,25 +17,30 @@ passport.use(
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: '/auth/google/callback'
-    }, (accessToken, refreshToken, profile, done) => {
-        // check if user already exists in our db
-        seekerModel.findOne({googleId: profile.id}).then((currentUser) => {
-            if(currentUser){
+    }, async (accessToken, refreshToken, profile, done) => {
+        try {
+            // check if user already exists in our db
+            const currentUser = await seekerModel.findOne({ googleId: profile.id });
+
+            if (currentUser) {
                 // already have the user
                 console.log('user is: ', currentUser);
-                done(null, currentUser);
-            } else {
-                // if not, create user in our db
-                new seekerModel({
-                    googleId: profile.id,
-                    name: profile.displayName,
-                    email: profile.emails[0].value,
-                    image: profile.photos[0].value
-                }).save().then((newUser) => {
-                    console.log('new user created: ' + newUser);
-                    done(null, newUser);
-                });
+                return done(null, currentUser);
             }
-        });
+
+            // if not, create user in our db
+            const newUser = await new seekerModel({
+                googleId: profile.id,
+                name: profile.displayName,
+                email: profile.emails[0].value,
+                image: profile.photos[0].value
+            }).save();
+
+            console.log('new user created: ' + newUser);
+            done(null, newUser);
+        } catch (error) {
+            console.error('Error in Google Strategy:', error);
+            done(error, null);
+        }
     })
 );

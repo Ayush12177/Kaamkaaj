@@ -44,12 +44,8 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-  font-size: 25px;
-  transition: all 750ms ease-in-out;
-  color: #004274;
-  padding: 2px;
-  border-radius: 5px;
-  background-color: rgb(167, 208, 194);
+  color: #a7d0c2;
+  transition: color 0.3s ease;
 }
 
 #location-btn {
@@ -197,9 +193,9 @@ main h2 {
 }
 
 .card:hover {
-  transition: all 90ms ease-in-out;
-  box-shadow: 2px 3px 8px black;
-  cursor: pointer;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 @media (max-width:770px) {
@@ -457,6 +453,8 @@ main h2 {
 
 .social-icons a:hover {
   color: #ffffff;
+  transform: translateY(-3px);
+  transition: all 0.3s ease;
 }
 
 .google-btn {
