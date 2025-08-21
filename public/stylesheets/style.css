@@ -182,7 +182,7 @@ main h2 {
 
 .card img {
   width: 100%;
-  padding: 1rem;
+  padding: .5rem;
   height: 15vmax;
   border-radius: 20px;
 }
@@ -194,11 +194,11 @@ main h2 {
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 19px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
-@media (max-width:770px) {
+@media (max-width:900px) {
   .card {
     width: 18vmax;
     height: 22vmax;
@@ -211,15 +211,10 @@ main h2 {
 
 
   .card h2 {
-    font-size: 18px;
+    font-size: 1rem;
     text-align: center;
     margin: 0;
     padding: 0;
-  }
-
-  .card p {
-    font-size: 16px;
-    padding-left: 0;
   }
 }
 
