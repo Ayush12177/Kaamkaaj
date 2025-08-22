@@ -14,8 +14,8 @@ body {
 
 /* Page container */
 .page-container {
-  max-width: 320px;
-  margin: 0 0;
+  max-width: 100%;
+  margin: 0 auto;
   padding: 2rem;
 }
 
@@ -28,24 +28,26 @@ body {
 }
 /* Heading */
 h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 600;
   text-align: center;
   margin-bottom: 2rem;
   color: #1f2937;
 }
 
-/* Card grid */
+
 .card-container {
-  display: flex;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+ display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
+  justify-content:center;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
 /* Individual card */
 .card {
   background: #cddafa;
-  height: 370px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -62,7 +64,6 @@ h1 {
 /* Card image */
 .card-image {
   width: 100%;
-  padding: 1rem;
   height: 200px;
   overflow: hidden;
 }
@@ -70,10 +71,9 @@ h1 {
 .card-image img {
   width: 100%;
   height: 100%;
-  border-radius: 12px;
-  object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
+  border-radius: 10px;
 }
 
 .card-image img:hover {
@@ -82,21 +82,23 @@ h1 {
 
 /* Card content */
 .card-content {
-  padding: .8rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .card-content h2 {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 800;
-  margin-left: .5rem;
   margin-bottom: 0.5rem;
   color: #111827;
 }
 
 .card-content h3 {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #374151;
-  margin: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 /* No seekers message */
@@ -104,18 +106,48 @@ h1 {
   text-align: center;
   color: #6b7280;
   grid-column: 1 / -1;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
-/* Responsive typography */
+/* Responsive design */
+@media (max-width: 1024px) {
+  .card-container {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  h1{
+    font-size: 2rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .card-container {
+    grid-template-columns: 1fr;
+  }
   h1 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
+  }
+  .card-content h2 {
+    font-size: 1.3rem;
   }
   .card-content h3 {
-    font-size: 1.1rem;
-  }
-  .card-content p {
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: 1rem;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+  .card-content h2 {
+    font-size: 1.2rem;
+  }
+  .card-content h3 {
+    font-size: 0.8rem;
+  }
+  .home a {
+    font-size: 1.2rem;
   }
 }
