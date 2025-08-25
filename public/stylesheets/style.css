@@ -48,36 +48,7 @@ nav ul li a:hover {
   transition: color 0.3s ease;
 }
 
-#location-btn {
-  background: transparent;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
 
-#location-btn i:hover {
-  color: #a7d0c2;
-  transition: color 0.3s ease;
-}
-
-
-.location-btn-styled {
-    text-decoration: none;
-    color: #fff;
-    font-size: 15px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.location-btn-styled:hover {
-    font-size: 20px;
-    transition: all 750ms ease-in-out;
-    color: #fff;
-    padding: 2px;
-    border-radius: 5px;
-    /* background-color: rgb(167, 208, 194); */
-}
 
 .menu-icon {
   display: none;

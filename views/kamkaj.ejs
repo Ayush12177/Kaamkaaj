@@ -86,17 +86,7 @@
                 <li><a href="#foot">About us</a></li>
                 <li><a href="#serve">Services</a></li>
                 <li><a href="/register/jobseeker">Sign up</a></li>
-
-
-                <li>
-                    <button id="location-btn">
-                        <% if (typeof location !=='undefined' && location) { %>
-                            <%= location %>
-                                <% } else { %>
-                                    <i class="fa-solid fa-location-dot" style="color: #fff; font-size: 1.5rem;"></i>
-                                    <% } %>
-                    </button>
-                </li>
+                
                 <li><a href="/dashboard"><i class="fa-regular fa-user"></i></a></li>
             </ul>
         </nav>
@@ -307,119 +297,7 @@
                 });
             });
 
-            const locationBtn = document.getElementById('location-btn');
-            const modal = document.getElementById('locationModal');
-            const closeBtn = document.getElementsByClassName('close')[0];
-            const allowBtn = document.getElementById('allow-location');
-            const manualLocationInput = document.getElementById('manual-location');
-            const submitLocationBtn = document.getElementById('submit-location');
-
-            // Show modal on first load if no saved location
-            window.onload = function () {
-                const savedLocation = localStorage.getItem('user-location');
-                if (savedLocation) {
-                    locationBtn.innerHTML = savedLocation;
-                    locationBtn.classList.add('location-btn-styled');
-                } else {
-                    modal.style.display = 'block';
-                }
-            }
-
-            // Close modal
-            closeBtn.onclick = function () {
-                modal.style.display = 'none';
-            }
-
-            // Allow current location
-            allowBtn.onclick = function () {
-                localStorage.setItem('location-permission', 'granted');
-                modal.style.display = 'none';
-                getLocation();
-            }
-
-            // Submit manual location
-            submitLocationBtn.onclick = function () {
-                const manualLocation = manualLocationInput.value.trim();
-                if (manualLocation) {
-                    localStorage.setItem('location-permission', 'granted');
-                    localStorage.setItem('user-location', manualLocation);
-                    modal.style.display = 'none';
-                    locationBtn.innerHTML = manualLocation;
-                    locationBtn.classList.add('location-btn-styled');
-
-                    // Send to server
-                    fetch('/location', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ location: manualLocation })
-                    }).catch(err => console.error(err));
-                }
-            }
-
-            // Hybrid: first time → modal, later → fetch directly
-            locationBtn.addEventListener('click', () => {
-                if (!localStorage.getItem('location-permission')) {
-                    modal.style.display = 'block'; // show modal only the first time
-                } else {
-                    getLocation(); // fetch directly afterwards
-                }
-            });
-
-            // Geolocation function
-            function getLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition, showError, {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 0
-                    });
-                } else {
-                    locationBtn.innerHTML = "Geolocation not supported";
-                }
-            }
-
-            // Show position
-            function showPosition(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const locationName = data.display_name || `${lat}, ${lon}`;
-                        locationBtn.innerHTML = locationName;
-                        locationBtn.classList.add('location-btn-styled');
-                        localStorage.setItem('user-location', locationName);
-
-                        // Send to server
-                        fetch('/location', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ location: locationName })
-                        }).catch(err => console.error(err));
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        locationBtn.innerHTML = "Could not fetch address";
-                    });
-            }
-
-            // Error handler
-            function showError(error) {
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        locationBtn.innerHTML = "User denied Geolocation";
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        locationBtn.innerHTML = "Location unavailable";
-                        break;
-                    case error.TIMEOUT:
-                        locationBtn.innerHTML = "Location request timed out";
-                        break;
-                    default:
-                        locationBtn.innerHTML = "An unknown error occurred";
-                }
-            }
+            
 
         </script>
         <% if (typeof message !=='undefined' && message) { %>
@@ -428,18 +306,7 @@
             </script>
             <% } %>
                 </script>
-                <!-- Location Modal -->
-                <div id="locationModal" class="modal" style="display:none;">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <h2>Choose your location</h2>
-                        <p>Enter your location manually or allow us to use your current location.</p>
-                        <input type="text" id="manual-location" placeholder="Enter your city or address">
-                        <button id="submit-location">Submit</button>
-                        <hr>
-                        <button id="allow-location">Use my current location</button>
-                    </div>
-                </div>
+                
 </body>
 
 </html>
