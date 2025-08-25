@@ -86,6 +86,8 @@
                 <li><a href="#foot">About us</a></li>
                 <li><a href="#serve">Services</a></li>
                 <li><a href="/register/jobseeker">Sign up</a></li>
+                
+                
                 <li>
                     <button id="location-btn">
                         <% if (typeof location !=='undefined' && location) { %>
@@ -261,18 +263,9 @@
             </div>
         </footer>
 
-        <!-- Location Modal -->
-        <div id="locationModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Choose your location</h2>
-                <p>Enter your location manually or allow us to use your current location.</p>
-                <input type="text" id="manual-location" placeholder="Enter your city or address">
-                <button id="submit-location">Submit</button>
-                <hr>
-                <button id="allow-location">Use my current location</button>
-            </div>
-        </div>
+        
+
+        
 
         <script>
             function toggleMenu() {
@@ -314,7 +307,8 @@
                 });
             });
 
-            const modal = document.getElementById('locationModal');
+            
+                const modal = document.getElementById('locationModal');
             const closeBtn = document.getElementsByClassName('close')[0];
             const allowBtn = document.getElementById('allow-location');
             const manualLocationInput = document.getElementById('manual-location');
@@ -399,7 +393,7 @@
                         locationBtn.innerHTML = "User denied Geolocation";
                         break;
                     case error.POSITION_UNAVAILABLE:
-                        location.innerHTML = "Location unavailable";
+                        locationBtn.innerHTML = "Location unavailable";
                         break;
                     case error.TIMEOUT:
                         locationBtn.innerHTML = "Location request timed out";
@@ -409,6 +403,8 @@
                         break;
                 }
             }
+
+            
                 // Pop-up logic
             </script>
             <% if (typeof message !== 'undefined' && message) { %>
@@ -417,6 +413,18 @@
                 </script>
             <% } %>
         </script>
+        <!-- Location Modal -->
+        <div id="locationModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Choose your location</h2>
+                <p>Enter your location manually or allow us to use your current location.</p>
+                <input type="text" id="manual-location" placeholder="Enter your city or address">
+                <button id="submit-location">Submit</button>
+                <hr>
+                <button id="allow-location">Use my current location</button>
+            </div>
+        </div>
 </body>
 
 </html>
