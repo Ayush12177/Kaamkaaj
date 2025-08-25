@@ -86,8 +86,8 @@
                 <li><a href="#foot">About us</a></li>
                 <li><a href="#serve">Services</a></li>
                 <li><a href="/register/jobseeker">Sign up</a></li>
-                
-                
+
+
                 <li>
                     <button id="location-btn">
                         <% if (typeof location !=='undefined' && location) { %>
@@ -123,49 +123,49 @@
                         <div class="card">
                             <img src="/images/plumber.jpg" alt="plumber image">
                             <h2>Plumber</h2>
-                           
+
                         </div>
                     </a>
                     <a href="<%= link %>" id="anchor">
                         <div class="card">
                             <img src="/images/carpenter.jpg" alt="carpenter image">
                             <h2>Carpenter</h2>
-                            
+
                         </div>
                     </a>
                     <a href="<%= link %>" id="anchor">
                         <div class="card">
                             <img src="/images/mechanic.webp" alt="mechanic image">
                             <h2>Mechanic</h2>
-                            
+
                         </div>
                     </a>
                     <a href="<%= link %>" id="anchor">
                         <div class="card">
                             <img src="/images/driver.webp" alt="driver image">
                             <h2>Driver</h2>
-                            
+
                         </div>
                     </a>
                     <a href="<%= link %>" id="anchor">
                         <div class="card">
                             <img src="/images/electrician.jpg" alt="electrician image">
                             <h2>Electrician</h2>
-                            
+
                         </div>
                     </a>
                     <a href="<%= link %>" id="anchor">
                         <div class="card">
                             <img src="/images/dilevery boy.avif" alt="delivery boy image">
                             <h2>Dilevery Boy</h2>
-                           
+
                         </div>
                     </a>
                     <a href="<%= link %>" id="anchor">
                         <div class="card">
                             <img src="/images/construction worker.webp" alt="const. worker image">
                             <h2>Worker</h2>
-                            
+
                         </div>
                     </a>
             </div>
@@ -263,9 +263,9 @@
             </div>
         </footer>
 
-        
 
-        
+
+
 
         <script>
             function toggleMenu() {
@@ -307,14 +307,15 @@
                 });
             });
 
-            
-                const modal = document.getElementById('locationModal');
+
+            const modal = document.getElementById('locationModal');
             const closeBtn = document.getElementsByClassName('close')[0];
             const allowBtn = document.getElementById('allow-location');
             const manualLocationInput = document.getElementById('manual-location');
             const submitLocationBtn = document.getElementById('submit-location');
             const locationBtn = document.getElementById('location-btn');
 
+            // Show modal on first load
             window.onload = function () {
                 if (!localStorage.getItem('location-permission')) {
                     modal.style.display = 'block';
@@ -338,26 +339,28 @@
                     modal.style.display = 'none';
                     locationBtn.innerHTML = manualLocation;
                     locationBtn.classList.add('location-btn-styled');
+
                     // Send location to server
                     fetch('/location', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ location: manualLocation })
-                    }).then(() => {
-                        window.location.reload();
-                    });
+                    }).catch(err => console.error(err));
                 }
             }
 
+            // Open modal when button clicked
             locationBtn.addEventListener('click', () => {
                 modal.style.display = 'block';
             });
 
             function getLocation() {
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                    navigator.geolocation.getCurrentPosition(showPosition, showError, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    });
                 } else {
                     locationBtn.innerHTML = "Geolocation not supported";
                 }
@@ -372,14 +375,13 @@
                     .then(data => {
                         locationBtn.innerHTML = data.display_name;
                         locationBtn.classList.add('location-btn-styled');
+
                         // Send location to server
                         fetch('/location', {
                             method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
+                            headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ location: data.display_name })
-                        });
+                        }).catch(err => console.error(err));
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -403,28 +405,25 @@
                         break;
                 }
             }
-
-            
-                // Pop-up logic
-            </script>
-            <% if (typeof message !== 'undefined' && message) { %>
-                <script>
-                    alert("<%= message %>");
-                </script>
-            <% } %>
         </script>
-        <!-- Location Modal -->
-        <div id="locationModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Choose your location</h2>
-                <p>Enter your location manually or allow us to use your current location.</p>
-                <input type="text" id="manual-location" placeholder="Enter your city or address">
-                <button id="submit-location">Submit</button>
-                <hr>
-                <button id="allow-location">Use my current location</button>
-            </div>
-        </div>
+        <% if (typeof message !=='undefined' && message) { %>
+            <script>
+                alert("<%= message %>");
+            </script>
+            <% } %>
+                </script>
+                <!-- Location Modal -->
+                <div id="locationModal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Choose your location</h2>
+                        <p>Enter your location manually or allow us to use your current location.</p>
+                        <input type="text" id="manual-location" placeholder="Enter your city or address">
+                        <button id="submit-location">Submit</button>
+                        <hr>
+                        <button id="allow-location">Use my current location</button>
+                    </div>
+                </div>
 </body>
 
 </html>
