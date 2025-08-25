@@ -250,4 +250,10 @@ app.get("/logout", (req, res) => {
     return res.render('kamkaj', { userType: null });
 });
 
+app.post('/location', (req, res) => {
+  const { location } = req.body;
+  req.session.location = location;
+  res.sendStatus(200);
+});
+
 module.exports = app;
