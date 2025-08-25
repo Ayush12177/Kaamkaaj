@@ -307,40 +307,47 @@
                 });
             });
 
-
+            const locationBtn = document.getElementById('location-btn');
             const modal = document.getElementById('locationModal');
             const closeBtn = document.getElementsByClassName('close')[0];
             const allowBtn = document.getElementById('allow-location');
             const manualLocationInput = document.getElementById('manual-location');
             const submitLocationBtn = document.getElementById('submit-location');
-            const locationBtn = document.getElementById('location-btn');
 
-            // Show modal on first load
+            // Show modal on first load if no saved location
             window.onload = function () {
-                if (!localStorage.getItem('location-permission')) {
+                const savedLocation = localStorage.getItem('user-location');
+                if (savedLocation) {
+                    locationBtn.innerHTML = savedLocation;
+                    locationBtn.classList.add('location-btn-styled');
+                } else {
                     modal.style.display = 'block';
                 }
             }
 
+            // Close modal
             closeBtn.onclick = function () {
                 modal.style.display = 'none';
             }
 
+            // Allow current location
             allowBtn.onclick = function () {
                 localStorage.setItem('location-permission', 'granted');
                 modal.style.display = 'none';
                 getLocation();
             }
 
+            // Submit manual location
             submitLocationBtn.onclick = function () {
                 const manualLocation = manualLocationInput.value.trim();
                 if (manualLocation) {
                     localStorage.setItem('location-permission', 'granted');
+                    localStorage.setItem('user-location', manualLocation);
                     modal.style.display = 'none';
                     locationBtn.innerHTML = manualLocation;
                     locationBtn.classList.add('location-btn-styled');
 
-                    // Send location to server
+                    // Send to server
                     fetch('/location', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -349,11 +356,16 @@
                 }
             }
 
-            // Open modal when button clicked
+            // Hybrid: first time → modal, later → fetch directly
             locationBtn.addEventListener('click', () => {
-                modal.style.display = 'block';
+                if (!localStorage.getItem('location-permission')) {
+                    modal.style.display = 'block'; // show modal only the first time
+                } else {
+                    getLocation(); // fetch directly afterwards
+                }
             });
 
+            // Geolocation function
             function getLocation() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(showPosition, showError, {
@@ -366,6 +378,7 @@
                 }
             }
 
+            // Show position
             function showPosition(position) {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
@@ -373,14 +386,16 @@
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
                     .then(response => response.json())
                     .then(data => {
-                        locationBtn.innerHTML = data.display_name;
+                        const locationName = data.display_name || `${lat}, ${lon}`;
+                        locationBtn.innerHTML = locationName;
                         locationBtn.classList.add('location-btn-styled');
+                        localStorage.setItem('user-location', locationName);
 
-                        // Send location to server
+                        // Send to server
                         fetch('/location', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ location: data.display_name })
+                            body: JSON.stringify({ location: locationName })
                         }).catch(err => console.error(err));
                     })
                     .catch(error => {
@@ -389,6 +404,7 @@
                     });
             }
 
+            // Error handler
             function showError(error) {
                 switch (error.code) {
                     case error.PERMISSION_DENIED:
@@ -400,11 +416,11 @@
                     case error.TIMEOUT:
                         locationBtn.innerHTML = "Location request timed out";
                         break;
-                    case error.UNKNOWN_ERROR:
+                    default:
                         locationBtn.innerHTML = "An unknown error occurred";
-                        break;
                 }
             }
+
         </script>
         <% if (typeof message !=='undefined' && message) { %>
             <script>
