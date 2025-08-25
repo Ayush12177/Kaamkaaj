@@ -6,73 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaamkaaj - Building the future</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
-    <style>
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-            border-radius: 10px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        #allow-location,
-        #deny-location {
-            padding: 10px 20px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #allow-location {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        #deny-location {
-            background-color: #f44336;
-            color: white;
-        }
-    </style>
-
-
-</head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    <link rel="stylesheet" href="/stylesheets/modal.css"> <!-- New modal stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
 
 <body>
     <header>
@@ -91,11 +31,7 @@
 
                 <li>
                     <button id="location-btn">
-                        <% if (typeof location !=='undefined' && location) { %>
-                            <%= location %>
-                                <% } else { %>
-                                    <i class="fa-solid fa-location-dot" style="color: #fff; font-size: 1.5rem;"></i>
-                                    <% } %>
+                        <i class="fa-solid fa-location-dot" style="color: #fff; font-size: 1.5rem;"></i>
                     </button>
                 </li>
 
@@ -267,12 +203,15 @@
         </footer>
 
         <!-- Location Modal -->
-        <div id="location-modal" class="modal">
+        <div id="locationModal" class="modal">
             <div class="modal-content">
-                <span class="close" id="close-modal">&times;</span>
-                <h2>Enter Your Location</h2>
-                <input type="text" id="location-input" placeholder="E.g., New York, NY">
+                <span class="close">&times;</span>
+                <h2>Choose your location</h2>
+                <p>Enter your location manually or allow us to use your current location.</p>
+                <input type="text" id="manual-location" placeholder="Enter your city or address">
                 <button id="submit-location">Submit</button>
+                <hr>
+                <button id="allow-location">Use my current location</button>
             </div>
         </div>
 
@@ -283,14 +222,16 @@
                 const menuList = document.getElementById('menuList');
                 if (menuList.style.maxHeight) {
                     menuList.style.maxHeight = null;
-                } else {
+                }
+                else {
                     menuList.style.maxHeight = menuList.scrollHeight + "px";
                 }
             }
             // Optional: Smooth scroll (if anchors have #ids in future)
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
+                    e.preventDefault(); // Prevent default link behavior if any
+
                     const target = document.querySelector(this.getAttribute('href'));
                     if (target) {
                         target.scrollIntoView({
@@ -326,11 +267,12 @@
             const submitLocationBtn = document.getElementById('submit-location');
             const locationBtn = document.getElementById('location-btn');
 
-            window.onload = function () {
-                if (!localStorage.getItem('location-permission')) {
-                    modal.style.display = 'block';
-                }
-            }
+            // Removed window.onload to prevent automatic modal display
+            // window.onload = function () {
+            //     if (!localStorage.getItem('location-permission')) {
+            //         modal.style.display = 'block';
+            //     }
+            // }
 
             closeBtn.onclick = function () {
                 modal.style.display = 'none';
@@ -347,8 +289,8 @@
                 if (manualLocation) {
                     localStorage.setItem('location-permission', 'granted');
                     modal.style.display = 'none';
-                    locationBtn.innerHTML = manualLocation;
-                    locationBtn.classList.add('location-btn-styled');
+                    locationBtn.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${manualLocation}`;
+ 
                     // Send location to server
                     fetch('/location', {
                         method: 'POST',
@@ -356,8 +298,15 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({ location: manualLocation })
-                    }).then(() => {
-                        window.location.reload();
+                    }).then(response => {
+                        if (response.ok) {
+                            console.log('Location sent to server successfully.');
+                            // No page reload needed, button text is already updated
+                        } else {
+                            console.error('Failed to send location to server.');
+                        }
+                    }).catch(error => {
+                        console.error('Error sending location:', error);
                     });
                 }
             }
@@ -369,7 +318,8 @@
             function getLocation() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(showPosition, showError);
-                } else {
+                }
+                else {
                     locationBtn.innerHTML = "Geolocation not supported";
                 }
             }
@@ -381,8 +331,8 @@
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
                     .then(response => response.json())
                     .then(data => {
-                        locationBtn.innerHTML = data.display_name;
-                        locationBtn.classList.add('location-btn-styled');
+                        locationBtn.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.display_name}`;
+     
                         // Send location to server
                         fetch('/location', {
                             method: 'POST',
@@ -424,19 +374,3 @@
                 </script>
             <% } %>
         </script>
-        <!-- Location Modal -->
-        <div id="locationModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Choose your location</h2>
-                <p>Enter your location manually or allow us to use your current location.</p>
-                <input type="text" id="manual-location" placeholder="Enter your city or address">
-                <button id="submit-location">Submit</button>
-                <hr>
-                <button id="allow-location">Use my current location</button>
-            </div>
-        </div>
-
-</body>
-
-</html>

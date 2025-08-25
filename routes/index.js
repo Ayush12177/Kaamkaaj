@@ -31,26 +31,27 @@ app.use(cookieParser());
 /* GET home page. */
 app.get('/', function (req, res, next) {
   const token = req.cookies.token;
+  const location = req.session.location;
 
   if (!token) {
-    return res.render('kamkaj', { userType: null });
+    return res.render('kamkaj', { userType: null, location: location });
   }
 // google Oauth authentication
 
   // Try to decode as seeker
   jwt.verify(token, "ayush", (err, seekerDecoded) => {
     if (!err && seekerDecoded && seekerDecoded.seekerid) {
-      return res.render('kamkaj', { userType: 'seeker' });
+      return res.render('kamkaj', { userType: 'seeker', location: location });
     }
 
     // If not a valid seeker token, try as user
     jwt.verify(token, "bhumii", (err2, userDecoded) => {
       if (!err2 && userDecoded && userDecoded.userid) {
-        return res.render('kamkaj', { userType: 'user' });
+        return res.render('kamkaj', { userType: 'user', location: location });
       }
 
-      // If token is invalid for both, render as logged out
-      return res.render('kamkaj', { userType: null });
+      // If both fail, render as logged out
+      return res.render('kamkaj', { userType: null, location: location });
     });
   });
 });
@@ -247,7 +248,8 @@ app.get("/delete/:id", async (req, res) => {
 
 app.get("/logout", (req, res) => {
     res.cookie("token", "", { expires: new Date(0) });
-    return res.render('kamkaj', { userType: null });
+    const location = req.session.location; // Retrieve location from session
+    return res.render('kamkaj', { userType: null, location: location });
 });
 
 app.post('/location', (req, res) => {
